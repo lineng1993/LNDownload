@@ -40,6 +40,7 @@
 {
     NSURL *url = [NSURL URLWithString:@"http://cloud.video.taobao.com/play/u/2365441852/p/1/e/6/t/1/30655046.mp4"];
     LNDownloader *downloader = [[LNDownloader alloc] initWithDownloadURL:url downloafPath:path];
+    _progress1.progress = downloader.progress;
     [manager startDownload:downloader];
   
 }

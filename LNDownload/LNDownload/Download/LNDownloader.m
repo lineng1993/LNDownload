@@ -17,7 +17,7 @@
 @property (nonatomic, copy)   NSURL               *downloadURL;
 @property (nonatomic, copy)   NSString            *downloadPath;
 @property (nonatomic, assign) DownloadState        state;
-@property (nonatomic, strong) NSNumber            *progress;
+@property (nonatomic, assign) float               progress;
 @property (nonatomic, strong) NSMutableData       *receiveData;
 @property (nonatomic, strong) NSMutableData       *resumeData;
 

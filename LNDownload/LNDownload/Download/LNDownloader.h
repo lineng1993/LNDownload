@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, DownloadState){
 
 @property (nonatomic, assign,readonly) float downloadRate;
 
-@property (nonatomic, strong,readonly) NSNumber *progress;
+@property (nonatomic, assign,readonly) float progress;
 
 @property (nonatomic, copy, readonly)NSURL *downloadURL;
 
