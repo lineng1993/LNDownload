@@ -11,11 +11,11 @@
 
 typedef NS_ENUM(NSInteger, DownloadState){
     
-    DownloadState_Ready,
+    DownloadState_Ready = 0,
     
     DownloadState_Doing,
     
-    DownloadState_Complete,
+    DownloadState_Success,
     
     DownloadState_Cancel,
     
@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, DownloadState){
 
 @property (nonatomic, assign,readonly) float downloadRate;
 
-@property (nonatomic, assign,readonly) float progress;
+@property (nonatomic, strong,readonly) NSNumber *progress;
 
 @property (nonatomic, copy, readonly)NSURL *downloadURL;
 
@@ -45,8 +45,16 @@ typedef NS_ENUM(NSInteger, DownloadState){
 
 - (instancetype) initWithDownloadURL:(NSURL *)url
                         downloafPath:(NSString *)path
-                            progress:(void (^)(int64_t totalByte,int64_t writeenTotal))progress
+                            progress:(void (^)(int64_t writtenByte,int64_t totalByte))progress
                                error:(void (^)(NSError *error))error
-                            complete:(void (^)(BOOL downloadFinished, NSString *pathToFile))completBlock;
+                            complete:(void (^)(BOOL downloadFinished, NSURLSessionDownloadTask *task))completBlock;
+
+
+
+- (void)cancelDownloaderAndRemoveFile:(BOOL)remove;
+
+
+
+
 
 @end
