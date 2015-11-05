@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		9B22D1581BE8C1C6002DE389 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B22D1571BE8C1C6002DE389 /* main.m */; };
 		9B22D15B1BE8C1C6002DE389 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B22D15A1BE8C1C6002DE389 /* AppDelegate.m */; };
-		9B22D15E1BE8C1C6002DE389 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B22D15D1BE8C1C6002DE389 /* ViewController.m */; };
 		9B22D1611BE8C1C6002DE389 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B22D15F1BE8C1C6002DE389 /* Main.storyboard */; };
 		9B22D1631BE8C1C6002DE389 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B22D1621BE8C1C6002DE389 /* Assets.xcassets */; };
 		9B22D1661BE8C1C6002DE389 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B22D1641BE8C1C6002DE389 /* LaunchScreen.storyboard */; };
@@ -17,6 +16,10 @@
 		9B22D17C1BE8C1C6002DE389 /* LNDownloadUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B22D17B1BE8C1C6002DE389 /* LNDownloadUITests.m */; };
 		9B22D18C1BE8C24D002DE389 /* LNDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B22D18B1BE8C24D002DE389 /* LNDownloadManager.m */; };
 		9B22D18F1BE8C261002DE389 /* LNDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B22D18E1BE8C261002DE389 /* LNDownloader.m */; };
+		9BA146C41BEAF4E200AED729 /* TableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA146C31BEAF4E200AED729 /* TableDataSource.m */; };
+		9BA146C81BEAF7D600AED729 /* DownloadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA146C61BEAF7D600AED729 /* DownloadCell.m */; };
+		9BA146C91BEAF7D600AED729 /* DownloadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9BA146C71BEAF7D600AED729 /* DownloadCell.xib */; };
+		9BCC55C51BEA1E2000361DF9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCC55C41BEA1E2000361DF9 /* ViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,8 +44,6 @@
 		9B22D1571BE8C1C6002DE389 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9B22D1591BE8C1C6002DE389 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9B22D15A1BE8C1C6002DE389 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		9B22D15C1BE8C1C6002DE389 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		9B22D15D1BE8C1C6002DE389 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		9B22D1601BE8C1C6002DE389 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9B22D1621BE8C1C6002DE389 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9B22D1651BE8C1C6002DE389 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -57,6 +58,13 @@
 		9B22D18B1BE8C24D002DE389 /* LNDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LNDownloadManager.m; path = Download/LNDownloadManager.m; sourceTree = "<group>"; };
 		9B22D18D1BE8C261002DE389 /* LNDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LNDownloader.h; path = Download/LNDownloader.h; sourceTree = "<group>"; };
 		9B22D18E1BE8C261002DE389 /* LNDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LNDownloader.m; path = Download/LNDownloader.m; sourceTree = "<group>"; };
+		9BA146C21BEAF4E200AED729 /* TableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TableDataSource.h; path = TestVC/TableDataSource.h; sourceTree = "<group>"; };
+		9BA146C31BEAF4E200AED729 /* TableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TableDataSource.m; path = TestVC/TableDataSource.m; sourceTree = "<group>"; };
+		9BA146C51BEAF7D600AED729 /* DownloadCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadCell.h; path = TestVC/DownloadCell.h; sourceTree = "<group>"; };
+		9BA146C61BEAF7D600AED729 /* DownloadCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DownloadCell.m; path = TestVC/DownloadCell.m; sourceTree = "<group>"; };
+		9BA146C71BEAF7D600AED729 /* DownloadCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DownloadCell.xib; path = TestVC/DownloadCell.xib; sourceTree = "<group>"; };
+		9BCC55C31BEA1E2000361DF9 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = TestVC/ViewController.h; sourceTree = "<group>"; };
+		9BCC55C41BEA1E2000361DF9 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = TestVC/ViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,11 +115,10 @@
 		9B22D1551BE8C1C6002DE389 /* LNDownload */ = {
 			isa = PBXGroup;
 			children = (
+				9BCC55C21BEA1E1400361DF9 /* TestVC */,
 				9B22D1891BE8C236002DE389 /* Download */,
 				9B22D1591BE8C1C6002DE389 /* AppDelegate.h */,
 				9B22D15A1BE8C1C6002DE389 /* AppDelegate.m */,
-				9B22D15C1BE8C1C6002DE389 /* ViewController.h */,
-				9B22D15D1BE8C1C6002DE389 /* ViewController.m */,
 				9B22D15F1BE8C1C6002DE389 /* Main.storyboard */,
 				9B22D1621BE8C1C6002DE389 /* Assets.xcassets */,
 				9B22D1641BE8C1C6002DE389 /* LaunchScreen.storyboard */,
@@ -156,6 +163,20 @@
 				9B22D18E1BE8C261002DE389 /* LNDownloader.m */,
 			);
 			name = Download;
+			sourceTree = "<group>";
+		};
+		9BCC55C21BEA1E1400361DF9 /* TestVC */ = {
+			isa = PBXGroup;
+			children = (
+				9BCC55C31BEA1E2000361DF9 /* ViewController.h */,
+				9BCC55C41BEA1E2000361DF9 /* ViewController.m */,
+				9BA146C21BEAF4E200AED729 /* TableDataSource.h */,
+				9BA146C31BEAF4E200AED729 /* TableDataSource.m */,
+				9BA146C51BEAF7D600AED729 /* DownloadCell.h */,
+				9BA146C61BEAF7D600AED729 /* DownloadCell.m */,
+				9BA146C71BEAF7D600AED729 /* DownloadCell.xib */,
+			);
+			name = TestVC;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,6 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B22D1661BE8C1C6002DE389 /* LaunchScreen.storyboard in Resources */,
+				9BA146C91BEAF7D600AED729 /* DownloadCell.xib in Resources */,
 				9B22D1631BE8C1C6002DE389 /* Assets.xcassets in Resources */,
 				9B22D1611BE8C1C6002DE389 /* Main.storyboard in Resources */,
 			);
@@ -292,10 +314,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B22D18F1BE8C261002DE389 /* LNDownloader.m in Sources */,
-				9B22D15E1BE8C1C6002DE389 /* ViewController.m in Sources */,
+				9BA146C81BEAF7D600AED729 /* DownloadCell.m in Sources */,
 				9B22D15B1BE8C1C6002DE389 /* AppDelegate.m in Sources */,
 				9B22D1581BE8C1C6002DE389 /* main.m in Sources */,
+				9BA146C41BEAF4E200AED729 /* TableDataSource.m in Sources */,
 				9B22D18C1BE8C24D002DE389 /* LNDownloadManager.m in Sources */,
+				9BCC55C51BEA1E2000361DF9 /* ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +545,7 @@
 				9B22D1821BE8C1C6002DE389 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9B22D1831BE8C1C6002DE389 /* Build configuration list for PBXNativeTarget "LNDownloadTests" */ = {
 			isa = XCConfigurationList;
@@ -529,6 +554,7 @@
 				9B22D1851BE8C1C6002DE389 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9B22D1861BE8C1C6002DE389 /* Build configuration list for PBXNativeTarget "LNDownloadUITests" */ = {
 			isa = XCConfigurationList;
@@ -537,6 +563,7 @@
 				9B22D1881BE8C1C6002DE389 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

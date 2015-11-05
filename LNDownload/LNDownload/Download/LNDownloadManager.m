@@ -8,7 +8,10 @@
 
 #import "LNDownloadManager.h"
 #import "LNDownloader.h"
-@interface LNDownloadManager()
+
+
+
+@interface LNDownloadManager()<LNDownloaderDelegate>
 
 @property (nonatomic, strong) NSOperationQueue *downloadQueue;
 
@@ -29,6 +32,8 @@
     });
     return manager;
 }
+
+#pragma mark  Init
 - (instancetype)init
 {
     self = [super init];
@@ -43,33 +48,39 @@
     return self;
 }
 
+#pragma mark public Method
 - (LNDownloader *)downloadWithURL:(NSURL *)url
                      downloadPath:(NSString *)path
+                        
 {
     NSString *downloadPath = path ? path:self.defaultDowmloadPath;
     LNDownloader *downloader = [[LNDownloader alloc] initWithDownloadURL:url
                                                             downloafPath:downloadPath];
+    downloader.delegate = self;
     [self.downloadQueue addOperation:downloader];
     return downloader;
     
 }
 - (LNDownloader *)downloadWithURL:(NSURL *)url
                        customPath:(NSString *)customPathOrNil
-                         progress:(void (^)(int64_t, int64_t))progressBlock
+                         progress:(void (^)(int64_t, int64_t,float))progressBlock
                             error:(void (^)(NSError *))errorBlock
                          complete:(void (^)(BOOL, NSURLSessionDownloadTask *))completeBlock
 {
      NSString *downloadPath = customPathOrNil ? customPathOrNil:self.defaultDowmloadPath;
     LNDownloader *downloader = [[LNDownloader alloc] initWithDownloadURL:url
-                                                            downloafPath:downloadPath progress:progressBlock
+                                                            downloafPath:downloadPath
+                                                                progress:progressBlock
                                                                    error:errorBlock
                                                                 complete:completeBlock];
+    downloader.delegate = self;
     [self.downloadQueue addOperation:downloader];
     return downloader;
 }
 
 - (void)startDownload:(LNDownloader *)downloader
 {
+    downloader.delegate = self;
     [self.downloadQueue addOperation:downloader];
 }
 
@@ -77,10 +88,17 @@
 {
     for (LNDownloader *downloader in [self.downloadQueue operations])
     {
+        downloader.delegate = nil;
         [downloader cancelDownloaderAndRemoveFile:remove];
     }
 }
 
+- (void)rDoAndownloadTask:(LNDownloader *)downloader
+{
+    [downloader cancelDownloaderAndRemoveFile:YES];
+    [self startDownload:downloader];
+    
+}
 - (NSUInteger) currentDowmloadCount
 {
     NSUInteger count = 0;
@@ -93,6 +111,31 @@
     return count;
 }
 
+#pragma mark   LNDownnloaderDelegate
+- (void)download:(LNDownloader *)downloader progress:(float)progress
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:DownloadStateChanged object:downloader];
+        [[NSNotificationCenter defaultCenter] postNotificationName:DownloadProgressChanged object:downloader userInfo:@{@"progress":@(progress)}];
+    });
+    
+}
+
+- (void)download:(LNDownloader *)downloader didStopWithError:(NSError *)error
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:DownloadFailed object:downloader];
+    });
+}
+
+- (void)download:(LNDownloader *)downloader didFinishWithSuccess:(BOOL)downloadFinished atPath:(NSString *)pathToFile
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:DownloadSucess object:downloader userInfo:@{@"path":pathToFile}];
+    });}
+
+
+#pragma mark private
 - (NSString *)creatDefaultDownloadPathIfNotExist:(NSString *)path
 {
     if ([[NSFileManager defaultManager] fileExistsAtPath:path])

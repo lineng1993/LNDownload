@@ -22,8 +22,11 @@ typedef NS_ENUM(NSInteger, DownloadState){
     DownloadState_Fail,
 };
 
+@protocol LNDownloaderDelegate ;
+
 @interface LNDownloader : NSOperation
 
+@property (nonatomic, weak)id<LNDownloaderDelegate>delegate;
 @property (nonatomic, assign,readonly) DownloadState state;
 
 @property (nonatomic, assign,readonly) float downloadRate;
@@ -34,6 +37,7 @@ typedef NS_ENUM(NSInteger, DownloadState){
 
 @property (nonatomic, copy, readonly)NSString *downloadPath;
 
+@property (nonatomic, copy, readonly)NSString *filePath;
 @property (nonatomic, copy, readwrite)NSString *fileName;
 
 @property (nonatomic, strong, readonly) NSMutableURLRequest *fileRequest;
@@ -45,7 +49,7 @@ typedef NS_ENUM(NSInteger, DownloadState){
 
 - (instancetype) initWithDownloadURL:(NSURL *)url
                         downloafPath:(NSString *)path
-                            progress:(void (^)(int64_t writtenByte,int64_t totalByte))progress
+                            progress:(void (^)(int64_t writtenByte,int64_t totalByte,float progress))progress
                                error:(void (^)(NSError *error))error
                             complete:(void (^)(BOOL downloadFinished, NSURLSessionDownloadTask *task))completBlock;
 
@@ -55,6 +59,23 @@ typedef NS_ENUM(NSInteger, DownloadState){
 
 
 
-
-
 @end
+
+
+
+@protocol LNDownloaderDelegate <NSObject>
+//提供下载进度
+- (void)download:(LNDownloader *)downloader
+        progress:(float)progress;
+
+//下载失败
+- (void)download:(LNDownloader *)downloader
+didStopWithError:(NSError *)error;
+
+//下载成功返回下载地址
+- (void)download:(LNDownloader *)downloader
+didFinishWithSuccess:(BOOL)downloadFinished
+          atPath:(NSString *)pathToFile;
+@end
+
+

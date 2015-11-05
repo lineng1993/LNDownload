@@ -26,7 +26,7 @@
 @property (nonatomic, strong)NSURLSession             *session;
 @property (nonatomic, strong)NSURLSessionDownloadTask *downloadTask;
 
-@property (nonatomic,copy)void(^progressBlock)(int64_t writtenByte,int64_t totalByte);
+@property (nonatomic,copy)void(^progressBlock)(int64_t writtenByte,int64_t totalByte,float progress);
 @property (nonatomic,copy)void(^errorBlock)(NSError *error);
 @property (nonatomic,copy)void(^completeBlock)(BOOL downloadFinished, NSURLSessionDownloadTask *task);
 
@@ -55,7 +55,7 @@
 
 - (instancetype)initWithDownloadURL:(NSURL *)url
                        downloafPath:(NSString *)path
-                           progress:(void (^)(int64_t, int64_t))progress
+                           progress:(void (^)(int64_t, int64_t,float))progress
                               error:(void (^)(NSError *))error
                            complete:(void (^)(BOOL, NSURLSessionDownloadTask *))completBlock
 {
@@ -72,7 +72,9 @@
 
 - (void)start
 {
-    
+    [self willChangeValueForKey:@"isExecuting"];
+    self.state = DownloadState_Doing;
+    [self didChangeValueForKey:@"isExecuting"];
     self.session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
                                                       delegate:self
                                                  delegateQueue:nil];
@@ -105,11 +107,20 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
 {
     self.writtenByte = totalBytesWritten;
     self.expectTotalByte = totalBytesExpectedToWrite;
-    self.state = DownloadState_Doing;
+   
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.progressBlock) {
-            self.progressBlock(totalBytesWritten,totalBytesExpectedToWrite);
+            self.progressBlock(totalBytesWritten,totalBytesExpectedToWrite,self.progress);
         }
+        if (self.writtenByte *1.0 / self.expectTotalByte > 0.01 || self.writtenByte *1.0 /self.expectTotalByte >= 0.99)
+        {
+             self.progress = (float)self.writtenByte / self.expectTotalByte;
+            if ([self.delegate respondsToSelector:@selector(download:progress:)])
+            {
+                [self.delegate download:self progress:self.progress];
+            }
+        }
+        
     });
 }
 
@@ -150,7 +161,7 @@ didFinishDownloadingToURL:(NSURL *)location
         
     {
         [self downloadWithError:nil task:self.downloadTask];
-        NSLog(@"下载完成，路径%@",self.downloadPath);
+
     }
     
     
@@ -177,6 +188,9 @@ didCompleteWithError:(NSError *)error
             {
                 self.errorBlock(error);
             }
+            if ([self.delegate respondsToSelector:@selector(download:didStopWithError:)]) {
+                [self.delegate download:self didStopWithError:error];
+            }
         });
     }
     BOOL success = error == nil;
@@ -188,6 +202,10 @@ didCompleteWithError:(NSError *)error
         {
             self.completeBlock(success,task);
         }
+        if ([self.delegate respondsToSelector:@selector(download:didFinishWithSuccess:atPath:)]) {
+            [self.delegate download:self didFinishWithSuccess:success atPath:[self.downloadPath stringByAppendingPathComponent:self.fileName]];
+        }
+
     });
 
     DownloadState state = success ? DownloadState_Success :DownloadState_Fail;
@@ -205,13 +223,32 @@ didCompleteWithError:(NSError *)error
 }
 - (void)cancelDownloaderAndRemoveFile:(BOOL)remove
 {
+    [self.downloadTask cancel];
+    self.delegate = nil;
+    [self removeFile];
+    [self cancel];
+}
+
+- (void)removeFile
+{
+    if ([FILE_MANAGER fileExistsAtPath:self.filePath])
+    {
+        [FILE_MANAGER removeItemAtPath:self.filePath error:nil];
+    }
     
+}
+- (NSString *)filePath
+{
+    return [self.downloadPath stringByAppendingString:self.fileName];
 }
 - (NSString *)fileName
 {
     return _fileName ? _fileName : [self.fileRequest .URL absoluteString].lastPathComponent;
 }
-
+- (float)progress
+{
+    return (float) self.writtenByte / self.expectTotalByte;
+}
 
 
 
