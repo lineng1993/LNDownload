@@ -13,6 +13,8 @@ typedef NS_ENUM(NSInteger, DownloadState){
     
     DownloadState_Ready = 0,
     
+    DownloadState_Suspend,
+    
     DownloadState_Doing,
     
     DownloadState_Success,
@@ -42,10 +44,23 @@ typedef NS_ENUM(NSInteger, DownloadState){
 
 @property (nonatomic, strong, readonly) NSMutableURLRequest *fileRequest;
 
+@property (readonly,getter=isSuspend) BOOL isSuspend;
+
+
+/*
+ 
+ 利用代理回调的初始化方式；
+ 
+ */
 
 - (instancetype) initWithDownloadURL:(NSURL *)url
                         downloafPath:(NSString *)path;
 
+/*
+ 
+ block回调的初始化方式；
+ 
+ */
 
 - (instancetype) initWithDownloadURL:(NSURL *)url
                         downloafPath:(NSString *)path
@@ -57,11 +72,20 @@ typedef NS_ENUM(NSInteger, DownloadState){
 
 - (void)cancelDownloaderAndRemoveFile:(BOOL)remove;
 
+- (void)pause;
 
+- (void)resume;
 
 @end
 
 
+
+
+
+
+/*
+       LNDownloadManager默认实现下列代理方法（以通知的方式通信），VC也可以单独实现
+ */
 
 @protocol LNDownloaderDelegate <NSObject>
 //提供下载进度

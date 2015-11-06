@@ -18,7 +18,7 @@
                         <rect key="frame" x="25" y="8" width="183" height="36"/>
                         <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k7q-4r-zCn">
@@ -32,13 +32,15 @@
                         <rect key="frame" x="129" y="52" width="89" height="23"/>
                         <animations/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3U3-mW-RqO">
-                        <rect key="frame" x="266" y="35" width="46" height="30"/>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3U3-mW-RqO">
+                        <rect key="frame" x="206" y="32" width="95" height="36"/>
                         <animations/>
-                        <state key="normal" title="下载"/>
+                        <state key="normal" title="下载">
+                            <color key="titleColor" red="1" green="0.67278083590000004" blue="0.13040553020000001" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
                         <connections>
                             <action selector="downloadClick:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="CpS-9U-G2P"/>
                         </connections>
@@ -53,7 +55,7 @@
                 <outlet property="downloadState" destination="hXt-l0-uZ3" id="HrW-aI-rJi"/>
                 <outlet property="nameLabel" destination="eXi-fI-24L" id="0Q0-7c-Cz9"/>
             </connections>
-            <point key="canvasLocation" x="382" y="141"/>
+            <point key="canvasLocation" x="357" y="138"/>
         </tableViewCell>
     </objects>
 </document>

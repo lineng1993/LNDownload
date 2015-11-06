@@ -39,6 +39,16 @@
     }
     else if (self.downloader.state == DownloadState_Fail)
     {
+        [[LNDownloadManager sharedInstance] rDoAndownloadTask:self.downloader];
+        
+    }else if(self.downloader.state == DownloadState_Doing){
+        [self.downloadButton setTitle:@"继续" forState:UIControlStateNormal];
+        [self.downloader pause];
+        
+    }else if (self.downloader.state == DownloadState_Suspend)
+    {
+        [self.downloadButton setTitle:@"暂停" forState:UIControlStateNormal];
+        [self.downloader resume];
         
     }
     
@@ -59,6 +69,7 @@
     {
         self.downloadRate.text = [NSString stringWithFormat:@"%.2f%%",[noti.userInfo[@"progress"] floatValue] * 100];
         self.downloadState.text = @"下载中";
+       
     }
    
 }
@@ -69,6 +80,7 @@
     {
         NSLog(@"%@下载失败",self.downloader.fileName);
         self.downloadState.text = @"下载失败";
+        [self.downloadButton setTitle:@"重新下载" forState:UIControlStateNormal];
     }
 }
 
@@ -77,6 +89,7 @@
     if (noti.object == self.downloader)
     {
         self.downloadState.text = @"下载成功";
+        [self.downloadButton setTitle:@"下载完成" forState:UIControlStateNormal];
         NSLog(@"%@下载完成，路径是 %@",self.downloader.fileName,noti.userInfo[@"path"]);
     }
 }

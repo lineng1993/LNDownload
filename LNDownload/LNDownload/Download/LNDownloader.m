@@ -13,13 +13,14 @@
 
 @interface LNDownloader()<NSURLSessionDownloadDelegate>
 
+
 @property (nonatomic, strong) NSMutableURLRequest *fileRequest;
 @property (nonatomic, copy)   NSURL               *downloadURL;
 @property (nonatomic, copy)   NSString            *downloadPath;
 @property (nonatomic, assign) DownloadState        state;
 @property (nonatomic, assign) float               progress;
 @property (nonatomic, strong) NSMutableData       *receiveData;
-@property (nonatomic, strong) NSMutableData       *resumeData;
+@property (nonatomic, strong) NSData       *resumeData;
 
 @property (nonatomic, assign)int64_t                  writtenByte;
 @property (nonatomic, assign)int64_t                  expectTotalByte;
@@ -36,7 +37,7 @@
 
 
 @implementation LNDownloader
-
+@dynamic isSuspend;
 #pragma mark  init
 - (instancetype)initWithDownloadURL:(NSURL *)url
                        downloafPath:(NSString *)path
@@ -75,11 +76,38 @@
     [self willChangeValueForKey:@"isExecuting"];
     self.state = DownloadState_Doing;
     [self didChangeValueForKey:@"isExecuting"];
+    
     self.session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]
-                                                      delegate:self
-                                                 delegateQueue:nil];
-    self.downloadTask = [self.session downloadTaskWithRequest:self.fileRequest];
+                                                     delegate:self
+                                                delegateQueue:nil];
+
+     self.downloadTask = [self.session downloadTaskWithRequest:self.fileRequest];
     [self.downloadTask resume];
+}
+
+- (void)resume
+{
+    if (!self.resumeData) {
+        return;
+    }
+    [self willChangeValueForKey:@"isExecuting"];
+    self.state = DownloadState_Doing;
+    [self didChangeValueForKey:@"isExecuting"];
+    self.downloadTask = [self.session downloadTaskWithResumeData:self.resumeData];
+    [self.downloadTask resume];
+    self.resumeData = nil;
+}
+
+- (void)pause
+{
+
+    [self willChangeValueForKey:@"isSuspend"];
+    self.state = DownloadState_Suspend;
+    [self didChangeValueForKey:@"isSuspend"];
+    [self.downloadTask cancelByProducingResumeData:^(NSData * _Nullable resumeData) {
+        self.resumeData = resumeData;
+        self.downloadTask = nil;
+    }];
 }
 
 - (BOOL)isExecuting
@@ -94,9 +122,12 @@
 
 - (BOOL)isFinished
 {
-    return self.state == DownloadState_Success;
+    return self.state == DownloadState_Success || self.state == DownloadState_Suspend || self.state == DownloadState_Fail || self.state == DownloadState_Cancel;
 }
-
+- (BOOL)isSuspend
+{
+    return self.state == DownloadState_Suspend;
+}
 
 #pragma mark -NSURLSessionDownloadDelegate
 - (void)URLSession:(NSURLSession *)session
@@ -160,6 +191,10 @@ didFinishDownloadingToURL:(NSURL *)location
     else
         
     {
+
+        [self willChangeValueForKey:@"isFinished"];
+        self.state = DownloadState_Success;
+        [self willChangeValueForKey:@"isFinished"];
         [self downloadWithError:nil task:self.downloadTask];
 
     }
@@ -173,7 +208,15 @@ didCompleteWithError:(NSError *)error
 {
     if (error)
     {
-         [self downloadWithError:error task:self.downloadTask];
+        if (self.state == DownloadState_Suspend)
+        {
+            
+        }
+        else
+        {
+           [self downloadWithError:error task:self.downloadTask];
+        }
+        
     }
    
 }
@@ -194,7 +237,7 @@ didCompleteWithError:(NSError *)error
         });
     }
     BOOL success = error == nil;
- 
+    
   
     dispatch_async(dispatch_get_main_queue(), ^{
             
@@ -202,12 +245,17 @@ didCompleteWithError:(NSError *)error
         {
             self.completeBlock(success,task);
         }
+        if (self.state == DownloadState_Suspend) {
+            return ;
+        }
         if ([self.delegate respondsToSelector:@selector(download:didFinishWithSuccess:atPath:)]) {
             [self.delegate download:self didFinishWithSuccess:success atPath:[self.downloadPath stringByAppendingPathComponent:self.fileName]];
         }
 
     });
-
+    if (self.state == DownloadState_Suspend) {
+        return ;
+    }
     DownloadState state = success ? DownloadState_Success :DownloadState_Fail;
     [self cancelAndSetDownloadStateWhenDownloadFinish:state];
 }
