@@ -40,7 +40,7 @@
     if (self)
     {
         self.downloadQueue = [[NSOperationQueue alloc] init];
-        self.downloadQueue.maxConcurrentOperationCount = 3;
+        self.downloadQueue.maxConcurrentOperationCount = 1;
         NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)lastObject] stringByAppendingPathComponent:@"Download"];
         self.defaultDowmloadPath = [self creatDefaultDownloadPathIfNotExist:path];
 
